@@ -1,0 +1,275 @@
+{
+  "info": {
+    "name": "Letter Management System API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"testuser\",\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\",\n  \"fullName\": \"Test User\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"testuser\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.environment.set(\"jwtToken\", pm.response.json().token);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-auth-token",
+                "value": "{{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "me"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Letters",
+      "item": [
+        {
+          "name": "Create Letter",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-auth-token",
+                "value": "{{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "referenceNumber",
+                  "value": "REF-2023-001"
+                },
+                {
+                  "key": "subject",
+                  "value": "Test Letter"
+                },
+                {
+                  "key": "content",
+                  "value": "This is a test letter content"
+                },
+                {
+                  "key": "sender",
+                  "value": "John Doe"
+                },
+                {
+                  "key": "recipient",
+                  "value": "Jane Smith"
+                },
+                {
+                  "key": "dateReceived",
+                  "value": "2023-06-15"
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "/path/to/testfile.pdf"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/letters",
+              "host": ["{{baseUrl}}"],
+              "path": ["letters"]
+            }
+          }
+        },
+        {
+          "name": "Get All Letters",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-auth-token",
+                "value": "{{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/letters",
+              "host": ["{{baseUrl}}"],
+              "path": ["letters"]
+            }
+          }
+        },
+        {
+          "name": "Get Single Letter",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-auth-token",
+                "value": "{{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/letters/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["letters", "1"]
+            }
+          }
+        },
+        {
+          "name": "Update Letter",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-auth-token",
+                "value": "{{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"subject\": \"Updated Test Letter\",\n  \"comments\": \"Updating for testing purposes\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/letters/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["letters", "1"]
+            }
+          }
+        },
+        {
+          "name": "Close Letter",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-auth-token",
+                "value": "{{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"comments\": \"Letter has been processed and closed\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/letters/1/close",
+              "host": ["{{baseUrl}}"],
+              "path": ["letters", "1", "close"]
+            }
+          }
+        },
+        {
+          "name": "Get Letter Transactions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-auth-token",
+                "value": "{{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/letters/1/transactions",
+              "host": ["{{baseUrl}}"],
+              "path": ["letters", "1", "transactions"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "auth": null,
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000/api"
+    },
+    {
+      "key": "jwtToken",
+      "value": ""
+    }
+  ]
+}
