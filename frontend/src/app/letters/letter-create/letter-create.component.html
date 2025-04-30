@@ -1,0 +1,66 @@
+<div class="letter-create-container">
+  <h2>Create New Letter</h2>
+
+  <form [formGroup]="letterForm" (ngSubmit)="onSubmit()" class="letter-form">
+    <div class="form-group">
+      <label for="referenceNumber">Reference Number</label>
+      <input id="referenceNumber" formControlName="referenceNumber" type="text" placeholder="e.g., REF-2023-001">
+      <div *ngIf="letterForm.get('referenceNumber')?.errors" class="error-message">
+        <span *ngIf="letterForm.get('referenceNumber')?.hasError('required')">Required</span>
+        <span *ngIf="letterForm.get('referenceNumber')?.hasError('pattern')">
+          Format: ABC-YYYY-NNN
+        </span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="subject">Subject</label>
+      <input id="subject" formControlName="subject" type="text">
+      <div *ngIf="letterForm.get('subject')?.errors" class="error-message">
+        <span *ngIf="letterForm.get('subject')?.hasError('required')">Required</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="sender">Sender</label>
+      <input id="sender" formControlName="sender" type="text">
+      <div *ngIf="letterForm.get('sender')?.errors" class="error-message">
+        <span *ngIf="letterForm.get('sender')?.hasError('required')">Required</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="recipient">Recipient</label>
+      <input id="recipient" formControlName="recipient" type="text">
+      <div *ngIf="letterForm.get('recipient')?.errors" class="error-message">
+        <span *ngIf="letterForm.get('recipient')?.hasError('required')">Required</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="dateReceived">Date Received</label>
+      <input id="dateReceived" formControlName="dateReceived" type="date">
+      <div *ngIf="letterForm.get('dateReceived')?.errors" class="error-message">
+        <span *ngIf="letterForm.get('dateReceived')?.hasError('required')">Required</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="content">Content</label>
+      <textarea id="content" formControlName="content" rows="5"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="file">Attachment (PDF/Image)</label>
+      <input id="file" type="file" (change)="onFileChange($event)" accept=".pdf,.jpg,.jpeg,.png">
+      <small *ngIf="fileToUpload">Selected: {{ fileToUpload.name }}</small>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" [disabled]="letterForm.invalid || isSubmitting" class="submit-btn">
+        {{ isSubmitting ? 'Creating...' : 'Create Letter' }}
+      </button>
+      <button type="button" routerLink="/letters" class="cancel-btn">Cancel</button>
+    </div>
+  </form>
+</div>

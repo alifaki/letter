@@ -2,3 +2,5 @@
 ./frontend/node_modules
 .env.production
 ./backend/.env
+.idea
+./frontend/.vscode

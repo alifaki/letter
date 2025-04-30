@@ -54,6 +54,7 @@ async function initializeDatabase() {
     }
 }
 
+const HOST = '127.0.0.1';
 initializeDatabase().then(() => {
     // Start your server here
     app.listen(PORT, () => {
