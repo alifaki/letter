@@ -10,9 +10,10 @@ RUN npm run build
 # Production stage
 FROM nginx:alpine
 
-# Use correct path based on angular.json outputPath
-COPY --from=builder /app/dist/letter /usr/share/nginx/html
+# Copy the nginx.conf from the frontend directory
+COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
-COPY ../nginx/nginx.conf /etc/nginx/conf.d/default.conf
+# Copy the built frontend into the Nginx container
+COPY --from=builder /app/dist/letter /usr/share/nginx/html
 
 EXPOSE 81
