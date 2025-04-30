@@ -14,7 +14,8 @@ ENV NODE_ENV=production
 
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app ./  # copy entire source code
+# copy entire source code
+COPY --from=builder /app ./
 
 EXPOSE 5000
 CMD ["node", "app.js"]
