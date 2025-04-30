@@ -40,7 +40,7 @@ services:
       context: .  # Set context to the root of the project (not just the 'frontend' folder)
       dockerfile: frontend/Dockerfile  # Point explicitly to the Dockerfile inside the 'frontend' folder
     ports:
-      - "81:80"
+      - "82:80"
     networks:
       - app-network
     depends_on:
@@ -51,7 +51,7 @@ services:
     image: nginx:alpine
     ports:
       - "443:443"
-      - "81:80"
+      - "82:80"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
       - ./frontend/dist:/usr/share/nginx/html

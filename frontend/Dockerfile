@@ -24,4 +24,4 @@ COPY --from=builder /app/dist/letter /usr/share/nginx/html
 # Copy the Nginx configuration file (ensure this path is correct)
 COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 81
+EXPOSE 82
