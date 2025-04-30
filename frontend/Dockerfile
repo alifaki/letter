@@ -1,26 +1,27 @@
-# Build stage
+# Build Stage
 FROM node:23-alpine as builder
 
 WORKDIR /app
 
-# Copy package.json and package-lock.json for npm install
-COPY package*.json ./
+# Copy package.json and package-lock.json
+COPY frontend/package*.json ./
 
+# Install dependencies
 RUN npm ci
 
-# Copy the rest of the frontend files
-COPY . .
+# Copy the Angular source code
+COPY frontend/ ./
 
-# Run the build
-RUN npm run build
+# Build the Angular app for production
+RUN npm run build --prod
 
-# Production stage
+# Production Stage
 FROM nginx:alpine
 
-# Copy nginx.conf from the project root to the Nginx config directory
-COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
-
-# Copy the built frontend files into Nginx
+# Copy the built Angular app to the Nginx container
 COPY --from=builder /app/dist/letter /usr/share/nginx/html
+
+# Copy the Nginx configuration file (ensure this path is correct)
+COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 81

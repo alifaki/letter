@@ -37,10 +37,10 @@ services:
 
   frontend:
     build:
-      context: .  # Set the context to the root of the project, not just ./frontend
-      dockerfile: frontend/Dockerfile
+      context: .  # Set context to the root of the project (not just the 'frontend' folder)
+      dockerfile: frontend/Dockerfile  # Point explicitly to the Dockerfile inside the 'frontend' folder
     ports:
-      - "80:80"
+      - "81:80"
     networks:
       - app-network
     depends_on:
