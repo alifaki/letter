@@ -36,7 +36,9 @@ services:
     restart: unless-stopped
 
   frontend:
-    build: ./frontend
+    build:
+      context: .  # Set the context to the root of the project, not just ./frontend
+      dockerfile: frontend/Dockerfile
     ports:
       - "80:80"
     networks:
