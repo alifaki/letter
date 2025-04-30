@@ -13,6 +13,6 @@ FROM nginx:alpine
 # Use correct path based on angular.json outputPath
 COPY --from=builder /app/dist/letter /usr/share/nginx/html
 
-COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
+COPY ../nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 81
