@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3.8'
 
 services:
   postgres:
@@ -11,11 +11,6 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - app-network
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
 
   backend:
     build: ./backend
@@ -28,24 +23,24 @@ services:
       DB_NAME: ${DB_NAME}
       JWT_SECRET: ${JWT_SECRET}
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     ports:
       - "5000:5000"
     networks:
       - app-network
-    restart: unless-stopped
 
   frontend:
     build:
-      context: .  # Set context to the root of the project (not just the 'frontend' folder)
-      dockerfile: frontend/Dockerfile  # Point explicitly to the Dockerfile inside the 'frontend' folder
+      context: ./frontend
+      dockerfile: Dockerfile
     ports:
-      - "8080:80"
+      - "80:80"
     networks:
       - app-network
     depends_on:
       - backend
-    restart: unless-stopped
+
 volumes:
   postgres_data:
 
